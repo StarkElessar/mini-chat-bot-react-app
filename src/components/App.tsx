@@ -42,10 +42,11 @@ const App: FC = () => {
 			console.log(data)
 
 			switch (data.type) {
-				case 'stream':
+				case 'stream': {
 					setIsTyping(true);
 					break;
-				case 'end':
+				}
+				case 'end': {
 					console.log('Стрим закончился, вот полное смс: ', messageRef.current);
 					console.log('А это дата: ', data);
 					const newMsg = {
@@ -65,8 +66,10 @@ const App: FC = () => {
 
 					console.log(messagesContainerRef);
 					break;
-				default:
+				}
+				default: {
 					break;
+				}
 			}
 		});
 
