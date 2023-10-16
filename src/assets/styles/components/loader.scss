@@ -1,0 +1,42 @@
+$animationTime: 0.8s;
+$dotSize: 10px;
+
+.loader {
+	text-align: left;
+	font-size: 12px;
+	font-style: italic;
+	color: #383838;
+
+	span {
+		display: inline-block;
+		vertical-align: middle;
+		width: $dotSize;
+		height: $dotSize;
+		background: var(--m-chat-primary-color);
+		border-radius: $dotSize;
+		animation: loader $animationTime infinite alternate;
+
+		&:not(:last-child) {
+			margin-right: 5px;
+		}
+
+		&:nth-of-type(2) {
+			animation-delay: 0.2s;
+		}
+
+		&:nth-of-type(3) {
+			animation-delay: 0.6s;
+		}
+	}
+}
+
+@keyframes loader {
+	0% {
+		opacity: 0.9;
+		transform: scale(0.5);
+	}
+	100% {
+		opacity: 0.1;
+		transform: scale(1);
+	}
+}
