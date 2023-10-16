@@ -5,6 +5,7 @@
 	display: flex;
 	align-items: flex-end;
 	gap: 10px;
+	animation: fade-up-big .3s ease-in-out forwards;
 
 	&.user {
 		flex-direction: row-reverse;
@@ -47,5 +48,6 @@
 		line-height: 155%;
 		text-align: left;
 		color: #383838;
+		box-shadow: 0 0 5px 0 rgba(#000, 10%);
 	}
 }
