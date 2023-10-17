@@ -1,6 +1,7 @@
+import { FC, ReactElement } from 'react';
 import { useElementHeight } from '../hooks/useElementHeight';
 
-const ChatHeader = () => {
+const ChatHeader: FC = (): ReactElement => {
 	const { elementRef, elementStyle } = useElementHeight('header');
 
 	return (
