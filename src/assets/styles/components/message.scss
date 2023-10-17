@@ -5,13 +5,13 @@
 	display: flex;
 	align-items: flex-end;
 	gap: 10px;
+	animation: fade-up-big .3s ease-in-out forwards;
 
 	&.user {
 		flex-direction: row-reverse;
 		align-self: flex-end;
 
 		.m-chat-message__text {
-			text-align: right;
 			background: var(--m-chat-head-bg-color);
 			color: var(--m-chat-white-color);
 			border-radius: 4px 4px 0 4px;
@@ -24,7 +24,7 @@
 		height: var(--size);
 		padding: 2px;
 		border-radius: 50%;
-		background-color: #F2F9FB;
+		background-color: #f2f9fb;
 		border: 1px solid rgba(#383838, 10%);
 		overflow: hidden;
 
@@ -37,9 +37,8 @@
 	&__text {
 		flex: 1 1 calc(100% - var(--size));
 		border-radius: 4px 4px 4px 0;
-		background-color: #F2F9FB;
+		background-color: #f2f9fb;
 		padding: 5px 10px;
-		width: min-content;
 		max-width: max-content;
 
 		font-size: 14px;
@@ -47,5 +46,7 @@
 		line-height: 155%;
 		text-align: left;
 		color: #383838;
+		word-break: break-word;
+		box-shadow: 0 0 5px 0 rgba(#000, 10%);
 	}
 }
