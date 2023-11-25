@@ -1,39 +1,26 @@
-import React, { FC } from 'react';
+import { FC, memo, useEffect, useRef } from 'react';
+
 import Message from './Message';
+import { useAppSelector } from '../store';
 
-interface IMessage {
-	sender: 'bot' | 'you',
-	message: string;
-	id: string;
-}
+const ChatBody: FC = memo(() => {
+	const messagesEnd = useRef<HTMLDivElement>(null);
+	const messages = useAppSelector((state) => state.chat.messages);
 
-interface IProps {
-	allMessages: IMessage[];
-	result: string;
-	isTyping: boolean;
-}
+	useEffect(() => {
+		messagesEnd.current?.scrollIntoView();
+	}, [messages]);
 
-const ChatBody: FC<IProps> = ({ allMessages = [], result, isTyping  }) => {
 	return (
 		<div className="m-chat-body">
 			{
-				allMessages.map(({ sender, message, id }) => {
+				messages.map(({sender, message, id}) => {
 					return <Message isMe={sender === 'you'} message={message} key={id}/>
 				})
 			}
-
-			{
-				isTyping && (
-					<div className="loader">
-						печатает.. &nbsp;
-						<span></span>
-						<span></span>
-						<span></span>
-					</div>
-				)
-			}
+			<div ref={messagesEnd}/>
 		</div>
 	);
-};
+});
 
 export default ChatBody;

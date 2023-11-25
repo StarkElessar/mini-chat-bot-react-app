@@ -1,15 +1,15 @@
-import { useState, ChangeEvent, FormEvent, KeyboardEvent, FC, ReactElement } from 'react';
-import { SendIcon } from './icons';
+import { ChangeEvent, FormEvent, KeyboardEvent, FC, ReactElement, useState } from 'react';
+
+import { useAppDispatch, useAppSelector } from '../store';
+import { sendMessageThunk } from '../store/slices/chatSlice';
 import { useElementHeight } from '../hooks/useElementHeight';
+import { SendIcon } from './icons';
 
-interface IProps {
-	webSocket: WebSocket | null;
-	prompt: string;
-	setPrompt: (value: string) => void;
-}
-
-const ChatFooter: FC<IProps> = ({ webSocket, prompt, setPrompt }): ReactElement => {
+const ChatFooter: FC = (): ReactElement => {
+	const [ prompt, setPrompt ] = useState<string>('');
 	const { elementRef, elementStyle } = useElementHeight('footer');
+	const canSendMessage = useAppSelector((state) => state.chat.canSendMessage);
+	const dispatch = useAppDispatch();
 
 	const handleKeyup = (input: HTMLTextAreaElement): void => {
 		input.style.height = '64px';
@@ -22,9 +22,10 @@ const ChatFooter: FC<IProps> = ({ webSocket, prompt, setPrompt }): ReactElement 
 	};
 
 	const sendMessage = (): void => {
-		console.log({ prompt });
+		console.log(prompt);
+		if (!prompt.trim()) return;
 
-		webSocket?.send(prompt);
+		dispatch(sendMessageThunk(prompt));
 		setPrompt('');
 	};
 
@@ -35,7 +36,7 @@ const ChatFooter: FC<IProps> = ({ webSocket, prompt, setPrompt }): ReactElement 
 
 	const handleTextareaKeyup = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
 		// Проверяем, была ли нажата клавиша Enter (код клавиши 13)
-		if (!event.shiftKey && event.code === 'Enter') {
+		if (event.code === 'Enter' && event.ctrlKey) {
 			event.preventDefault(); // Предотвращаем перенос строки в текстовом поле
 			sendMessage();
 		}
@@ -56,7 +57,7 @@ const ChatFooter: FC<IProps> = ({ webSocket, prompt, setPrompt }): ReactElement 
 					className="m-chat-footer__btn"
 					type="submit"
 					title="Отправить сообщение"
-					disabled={!prompt}
+					disabled={!prompt || !canSendMessage}
 				>
 					<SendIcon/>
 				</button>
