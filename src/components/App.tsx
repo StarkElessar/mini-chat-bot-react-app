@@ -1,5 +1,4 @@
 import { FC, useEffect } from 'react';
-import { FC, RefObject, useEffect, useRef, useState } from 'react';
 
 import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
