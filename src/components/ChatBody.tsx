@@ -1,22 +1,20 @@
 import React, { FC, memo, useEffect, useRef } from 'react';
+
 import Message from './Message';
-import { IMessage } from '../types';
+import { useAppSelector } from '../store';
 
-interface IProps {
-	allMessages: IMessage[];
-}
-
-const ChatBody: FC<IProps> = memo(({ allMessages = [] }) => {
+const ChatBody: FC = memo(() => {
 	const messagesEnd = useRef<HTMLDivElement>(null);
+	const messages = useAppSelector((state) => state.chat.messages);
 
 	useEffect(() => {
 		messagesEnd.current?.scrollIntoView();
-	}, [allMessages]);
+	}, [messages]);
 
 	return (
 		<div className="m-chat-body">
 			{
-				allMessages.map(({sender, message, id}) => {
+				messages.map(({sender, message, id}) => {
 					return <Message isMe={sender === 'you'} message={message} key={id}/>
 				})
 			}

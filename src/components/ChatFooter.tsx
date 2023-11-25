@@ -1,14 +1,15 @@
 import { ChangeEvent, FormEvent, KeyboardEvent, FC, ReactElement, useState } from 'react';
-import { SendIcon } from './icons';
+
+import { useAppDispatch, useAppSelector } from '../store';
+import { sendMessageThunk } from '../store/slices/chatSlice';
 import { useElementHeight } from '../hooks/useElementHeight';
+import { SendIcon } from './icons';
 
-interface IProps {
-	webSocket: WebSocket | null;
-}
-
-const ChatFooter: FC<IProps> = ({ webSocket }): ReactElement => {
+const ChatFooter: FC = (): ReactElement => {
 	const [ prompt, setPrompt ] = useState<string>('');
 	const { elementRef, elementStyle } = useElementHeight('footer');
+	const canSendMessage = useAppSelector((state) => state.chat.canSendMessage);
+	const dispatch = useAppDispatch();
 
 	const handleKeyup = (input: HTMLTextAreaElement): void => {
 		input.style.height = '64px';
@@ -21,9 +22,10 @@ const ChatFooter: FC<IProps> = ({ webSocket }): ReactElement => {
 	};
 
 	const sendMessage = (): void => {
+		console.log(prompt);
 		if (!prompt.trim()) return;
 
-		webSocket?.send(prompt);
+		dispatch(sendMessageThunk(prompt));
 		setPrompt('');
 	};
 
@@ -55,7 +57,7 @@ const ChatFooter: FC<IProps> = ({ webSocket }): ReactElement => {
 					className="m-chat-footer__btn"
 					type="submit"
 					title="Отправить сообщение"
-					disabled={!prompt}
+					disabled={!prompt || !canSendMessage}
 				>
 					<SendIcon/>
 				</button>
