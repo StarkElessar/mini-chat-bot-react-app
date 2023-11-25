@@ -25,6 +25,16 @@
 		right: 0;
 		border-radius: 0;
 	}
+
+	&.is-open {
+		.m-chat-body {
+			display: flex;
+		}
+
+		.m-chat-footer {
+			display: block;
+		}
+	}
 }
 
 .m-chat-header {
@@ -79,9 +89,9 @@
 }
 
 .m-chat-body {
+	display: none;
 	flex: 1 1 400px;
 	padding: 10px 15px;
-	display: flex;
 	flex-direction: column;
 	gap: 20px;
 	background-color: var(--m-chat-bg-color);
@@ -109,6 +119,7 @@
 }
 
 .m-chat-footer {
+	display: none;
 	padding: 10px 15px;
 	background-color: var(--m-chat-bg-color);
 	border-top: 1px solid rgba(#000, 10%);
