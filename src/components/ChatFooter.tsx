@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, KeyboardEvent, FC, ReactElement, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../store';
-import { sendMessageThunk } from '../store/slices/chatSlice';
+import { sendMessageThunk } from '../store/slices/chat-slice';
 import { useElementHeight } from '../hooks/useElementHeight';
 import { SendIcon } from './icons';
 
