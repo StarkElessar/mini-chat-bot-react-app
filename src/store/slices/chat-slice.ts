@@ -83,7 +83,7 @@ export const closeWSChanel = createAsyncThunk('chat/closeWSChat', async (arg, th
 	});
 });
 
-export const sendMessageThunk = createAsyncThunk('chat/sendMessageThunk', async (message: string): Promise<void> => {
+export const sendMessageThunk = createAsyncThunk('chat/sendMessageThunk', async (message: string | Blob): Promise<void> => {
 	// todo: здесь не должно быть обработки ошибок
 	try {
 		chatApi.sendMessage(message);

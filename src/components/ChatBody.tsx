@@ -14,9 +14,9 @@ const ChatBody: FC = memo(() => {
 	return (
 		<div className="m-chat-body">
 			{
-				messages.map(({sender, message, id}) => {
-					return <Message isMe={sender === 'you'} message={message} key={id}/>
-				})
+				messages.map((message) => (
+					<Message isMe={message.sender === 'you'} message={message}/>
+				))
 			}
 			<div ref={messagesEnd}/>
 		</div>
