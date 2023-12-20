@@ -7,8 +7,27 @@
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Web site created using create-react-app"/>
     <title>Mini Chat App</title>
+		<style>
+        body {
+            overflow-x: hidden;
+        }
+
+        .background-image {
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        .background-image img {
+            max-width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+		</style>
   </head>
   <body>
+		<div class="background-image">
+			<img src="bg.png"/>
+		</div>
     <div id="root"></div>
   </body>
 </html>

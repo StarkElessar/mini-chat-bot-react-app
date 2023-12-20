@@ -4,7 +4,7 @@ import logger from 'redux-logger';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { chatActions, chatReducer } from './slices/chatSlice';
+import { chatActions, chatReducer } from './slices/chat-slice';
 
 const rootReducer = combineReducers({
 	chat: chatReducer,

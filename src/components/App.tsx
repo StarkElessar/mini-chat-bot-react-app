@@ -4,7 +4,7 @@ import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
 import ChatFooter from './ChatFooter';
 import { useAppDispatch, useAppSelector } from '../store';
-import { closeWSChanel, openWSChanel } from '../store/slices/chatSlice';
+import { closeWSChanel, openWSChanel } from '../store/slices/chat-slice';
 
 const App: FC = () => {
 	const dispatch = useAppDispatch();

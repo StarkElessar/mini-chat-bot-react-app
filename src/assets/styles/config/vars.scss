@@ -1,11 +1,11 @@
 :root {
 	--m-chat-default-transition: .3s ease-in-out;
-	--m-chat-bg-color: #fff;
-	--m-chat-hue-color: 185;
-	--m-chat-primary-color: hsl(var(--m-chat-hue-color), 60%, 50%);
-	--m-chat-primary-dark-color: hsl(var(--m-chat-hue-color), 60%, 40%);
+	--m-chat-bg-color: #f4fcfe;
+	--m-chat-hue-color: 29;
+	--m-chat-primary-color: hsl(var(--m-chat-hue-color), 37%, 50%);
+	--m-chat-primary-dark-color: hsl(var(--m-chat-hue-color), 37%, 40%);
 
-	--m-chat-head-radius: 10px;
+	--m-chat-head-radius: 5px;
 	--m-chat-head-bg-color: linear-gradient(
 			272deg,
 			var(--m-chat-primary-dark-color) 0%,

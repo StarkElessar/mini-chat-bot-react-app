@@ -36,7 +36,7 @@ export class ChatApi {
 	}
 
 
-	public sendMessage(message: string): void {
+	public sendMessage(message: string | Blob): void {
 		this._ws?.send(message);
 	}
 
@@ -44,9 +44,19 @@ export class ChatApi {
 		console.info('WebSocket successfully opened.', event);
 	}
 
-	private onMessageHandler(event: MessageEvent): void {
-		const data = <IDataResponse>JSON.parse(event.data);
-		this._subscribers.forEach((subscriber) => subscriber(data));
+	private onMessageHandler({ data }: MessageEvent): void {
+		if (data instanceof Blob) {
+			this._subscribers.forEach((subscriber) => subscriber({
+				id: crypto.randomUUID(),
+				message: URL.createObjectURL(data),
+				type_message: 'file',
+				type: 'stream',
+				sender: 'you'
+			}));
+		} else {
+			const resData = <IDataResponse>JSON.parse(data);
+			this._subscribers.forEach((subscriber) => subscriber(resData));
+		}
 	}
 
 	private onErrorHandler(event: any): void {
