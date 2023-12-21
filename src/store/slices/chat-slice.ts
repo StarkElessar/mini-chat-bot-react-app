@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IDataResponse, IMessage } from '../../types';
 import { ChatApi } from '../../api/ChatApi';
 
-const chatApi = new ChatApi('ws://localhost:9000/chat');
+const chatApi = new ChatApi('ws://217.151.229.187:9080/api/chat?chat_person_id=1');
 
 interface IChatState {
 	messageStatus: 'start' | 'stream' | 'end';

@@ -1,7 +1,9 @@
 #root {
 	position: fixed;
-	font-family: Roboto, sans-serif;
+	font-family: "Open Sans", sans-serif;
 	font-weight: 400;
+	line-height: 140%;
+	font-size: 15px;
 	z-index: 10000;
 }
 
@@ -51,7 +53,6 @@
 	&__title {
 		font-size: 15px;
 		font-weight: 400;
-		line-height: 155%;
 		color: var(--m-chat-white-color);
 	}
 

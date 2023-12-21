@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
@@ -6,7 +6,7 @@ import ChatFooter from './ChatFooter';
 import { useAppDispatch, useAppSelector } from '../store';
 import { closeWSChanel, openWSChanel } from '../store/slices/chat-slice';
 
-const App: FC = () => {
+const App = () => {
 	const dispatch = useAppDispatch();
 	const isOpen = useAppSelector((state) => state.chat.isOpen);
 

@@ -18,7 +18,7 @@ const ChatHeader: FC = (): ReactElement => {
 
 	return (
 		<div className="m-chat-header" ref={elementRef} style={elementStyle} onClick={onOpenChatHandler}>
-			<div className="m-chat-header__title">Mriya Resort</div>
+			<div className="m-chat-header__title">Чат Dr.Bakers</div>
 
 			<button
 				type="button"

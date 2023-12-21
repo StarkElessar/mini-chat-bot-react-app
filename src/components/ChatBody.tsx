@@ -1,9 +1,9 @@
-import { FC, memo, useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 import Message from './Message';
 import { useAppSelector } from '../store';
 
-const ChatBody: FC = memo(() => {
+const ChatBody = memo(() => {
 	const messagesEnd = useRef<HTMLDivElement>(null);
 	const messages = useAppSelector((state) => state.chat.messages);
 
