@@ -41,22 +41,18 @@ export class ChatApi {
 	}
 
 	private onOpenSocketHandler(event: Event): void {
-		console.info('WebSocket successfully opened.', event);
+		this._subscribers.forEach((subscriber) => subscriber({
+			id: crypto.randomUUID(),
+			message: this._ws?.readyState === 1 ? 'Успешное подключение к чату' : 'Не удалось подключиться',
+			sender: 'bot',
+			type: 'end',
+			type_message: 'system'
+		}))
 	}
 
 	private onMessageHandler({ data }: MessageEvent): void {
-		if (data instanceof Blob) {
-			this._subscribers.forEach((subscriber) => subscriber({
-				id: crypto.randomUUID(),
-				message: URL.createObjectURL(data),
-				type_message: 'file',
-				type: 'stream',
-				sender: 'you'
-			}));
-		} else {
-			const resData = <IDataResponse>JSON.parse(data);
-			this._subscribers.forEach((subscriber) => subscriber(resData));
-		}
+		const resData = <IDataResponse>JSON.parse(data);
+		this._subscribers.forEach((subscriber) => subscriber(resData));
 	}
 
 	private onErrorHandler(event: any): void {
@@ -64,7 +60,13 @@ export class ChatApi {
 	}
 
 	private onCloseSocketHandler(event: CloseEvent): void {
-		console.log('WebSocket is closed.', event);
+		this._subscribers.forEach((subscriber) => subscriber({
+			id: crypto.randomUUID(),
+			message: 'Соединение разорвано',
+			type_message: 'system',
+			type: 'end',
+			sender: 'bot'
+		}));
 		setTimeout(this.createWSChannel.bind(this), 3000);
 	}
 }

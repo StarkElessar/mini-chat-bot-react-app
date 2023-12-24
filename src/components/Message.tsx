@@ -2,7 +2,7 @@ import { FC, memo, ReactElement } from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
 
 import { IMessage } from '../types';
-import BotIcon from '../assets/images/cookie.png';
+import BotIcon from '../assets/images/cookie-icon.svg';
 import UserIcon from '../assets/images/user-icon.png';
 
 interface IProps {

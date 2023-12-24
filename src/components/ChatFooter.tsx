@@ -1,15 +1,16 @@
-import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, KeyboardEvent, useEffect, useState } from 'react';
 
-import { useAppDispatch, useAppSelector } from '../store';
-import { sendMessageThunk } from '../store/slices/chat-slice';
+import { useActions, useAppDispatch, useAppSelector } from '../store';
+import { smsCountRemainRequest, sendMessageThunk, sendLogData } from '../store/slices/chat-slice';
 import { useElementHeight } from '../hooks/useElementHeight';
 import { SendIcon } from './icons';
 
 const ChatFooter = () => {
+	const dispatch = useAppDispatch();
 	const [ prompt, setPrompt ] = useState<string>('');
 	const { elementRef, elementStyle } = useElementHeight('footer');
-	const canSendMessage = useAppSelector((state) => state.chat.canSendMessage);
-	const dispatch = useAppDispatch();
+	const { canSendMessage, userDialogData } = useAppSelector((state) => state.chat);
+	const { addMessage } = useActions();
 
 	const handleKeyup = (input: HTMLTextAreaElement): void => {
 		input.style.height = '64px';
@@ -21,11 +22,27 @@ const ChatFooter = () => {
 		handleKeyup(target);
 	};
 
-	const sendMessage = (): void => {
+	const sendMessage = async (): Promise<void> => {
 		if (!prompt.trim()) return;
 
-		dispatch(sendMessageThunk(prompt));
-		setPrompt('');
+		try {
+			const res = dispatch(smsCountRemainRequest());
+			const smsLeftCount = await res.unwrap();
+
+			if (smsLeftCount) {
+				dispatch(sendMessageThunk(prompt));
+			}
+		} catch (err) {
+			console.warn(err);
+			addMessage({
+				id: crypto.randomUUID(),
+				message: 'Произошла ошибка, попробуйте позже',
+				sender: 'bot',
+				type_message: 'system'
+			});
+		} finally {
+			setPrompt('');
+		}
 	};
 
 	const formOnSubmit = (event: FormEvent<HTMLFormElement>): void => {
@@ -41,6 +58,10 @@ const ChatFooter = () => {
 			sendMessage();
 		}
 	};
+
+	useEffect(() => {
+		dispatch(sendLogData(userDialogData));
+	}, [userDialogData]);
 
 	return (
 		<div className="m-chat-footer" ref={elementRef} style={elementStyle}>
