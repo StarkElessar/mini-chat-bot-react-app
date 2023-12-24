@@ -7,11 +7,11 @@ import ImageLinkMessage from './ImageLinkMessage';
 
 const ChatBody = memo(() => {
 	const messagesEnd = useRef<HTMLDivElement>(null);
-	const messages = useAppSelector((state) => state.chat.messages);
+	const { messages, isTypingBot } = useAppSelector(({ chat }) => chat);
 
 	useEffect(() => {
 		messagesEnd.current?.scrollIntoView();
-	}, [messages]);
+	}, [messages, isTypingBot]);
 
 	return (
 		<div className="m-chat-body">
