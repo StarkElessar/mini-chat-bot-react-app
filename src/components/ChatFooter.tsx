@@ -1,16 +1,16 @@
-import { ChangeEvent, FormEvent, KeyboardEvent, FC, ReactElement, useState } from 'react';
+import { ChangeEvent, FormEvent, KeyboardEvent, useEffect, useState } from 'react';
 
-import { useAppDispatch, useAppSelector } from '../store';
-import { sendMessageThunk } from '../store/slices/chat-slice';
+import { useActions, useAppDispatch, useAppSelector } from '../store';
+import { smsCountRemainRequest, sendMessageThunk, sendLogData } from '../store/slices/chat-slice';
 import { useElementHeight } from '../hooks/useElementHeight';
-import { MicrophoneIcon, PaperClipIcon, SendIcon } from './icons';
-import { readFile } from '../utils/read-file';
+import { SendIcon } from './icons';
 
-const ChatFooter: FC = (): ReactElement => {
+const ChatFooter = () => {
+	const dispatch = useAppDispatch();
 	const [ prompt, setPrompt ] = useState<string>('');
 	const { elementRef, elementStyle } = useElementHeight('footer');
-	const canSendMessage = useAppSelector((state) => state.chat.canSendMessage);
-	const dispatch = useAppDispatch();
+	const { canSendMessage, userDialogData } = useAppSelector((state) => state.chat);
+	const { addMessage } = useActions();
 
 	const handleKeyup = (input: HTMLTextAreaElement): void => {
 		input.style.height = '64px';
@@ -22,12 +22,27 @@ const ChatFooter: FC = (): ReactElement => {
 		handleKeyup(target);
 	};
 
-	const sendMessage = (): void => {
-		console.log(prompt);
+	const sendMessage = async (): Promise<void> => {
 		if (!prompt.trim()) return;
 
-		dispatch(sendMessageThunk(prompt));
-		setPrompt('');
+		try {
+			const res = dispatch(smsCountRemainRequest());
+			const smsLeftCount = await res.unwrap();
+
+			if (smsLeftCount) {
+				dispatch(sendMessageThunk(prompt));
+			}
+		} catch (err) {
+			console.warn(err);
+			addMessage({
+				id: crypto.randomUUID(),
+				message: 'Произошла ошибка, попробуйте позже',
+				sender: 'bot',
+				type_message: 'system'
+			});
+		} finally {
+			setPrompt('');
+		}
 	};
 
 	const formOnSubmit = (event: FormEvent<HTMLFormElement>): void => {
@@ -37,30 +52,16 @@ const ChatFooter: FC = (): ReactElement => {
 
 	const handleTextareaKeyup = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
 		// Проверяем, была ли нажата клавиша Enter (код клавиши 13)
-		if (event.key === 'Enter' && event.ctrlKey) {
-			event.preventDefault(); // Предотвращаем перенос строки в текстовом поле
+		if (event.key === 'Enter') {
+			// Предотвращаем перенос строки в текстовом поле
+			event.preventDefault();
 			sendMessage();
 		}
 	};
 
-	const handleFileInputChange = async ({ target: { files } }: ChangeEvent<HTMLInputElement>): Promise<void> => {
-		if (files?.length) {
-			try {
-				// Чтение файла как ArrayBuffer
-				const arrayBuffer = await readFile(files[0]);
-				console.log(arrayBuffer);
-
-				// Создание Blob из ArrayBuffer
-				const blob = new Blob([arrayBuffer]);
-				console.log(blob);
-
-				dispatch(sendMessageThunk(blob));
-				console.log('Файл отправлен');
-			} catch (error) {
-				console.error('Ошибка при чтении файла', error);
-			}
-		}
-	};
+	useEffect(() => {
+		dispatch(sendLogData(userDialogData));
+	}, [userDialogData]);
 
 	return (
 		<div className="m-chat-footer" ref={elementRef} style={elementStyle}>
@@ -82,20 +83,6 @@ const ChatFooter: FC = (): ReactElement => {
 					<SendIcon/>
 				</button>
 			</form>
-			<div className="m-chat-footer__actions">
-				<label className="m-chat-footer__action-btn">
-					<PaperClipIcon/>
-					<input type="file" onChange={handleFileInputChange}/>
-				</label>
-
-				<button
-					type="button"
-					className="m-chat-footer__action-btn"
-					title="В разработке"
-				>
-					<MicrophoneIcon/>
-				</button>
-			</div>
 		</div>
 	);
 };
