@@ -21,6 +21,7 @@ export interface IRecipe {
 
 export interface IChatState {
 	messageStatus: 'start' | 'stream' | 'end';
+	isTypingBot: boolean;
 	isOpen: boolean;
 	canSendMessage: boolean;
 	messages: IMessage[];
@@ -31,6 +32,7 @@ export interface IChatState {
 
 const initialState: IChatState = {
 	isOpen: true,
+	isTypingBot: false,
 	messageStatus: 'end',
 	canSendMessage: true,
 	messages: [],
@@ -60,6 +62,10 @@ const { actions: chatActions, reducer: chatReducer } = createSlice({
 					break;
 				}
 				case 'stream': {
+					if (payload.sender === 'bot') {
+						state.isTypingBot = false;
+					}
+
 					const existingMessageIndex = state.messages.findIndex(({ id }) => id === payload.id);
 
 					if (existingMessageIndex !== -1) {
@@ -72,6 +78,10 @@ const { actions: chatActions, reducer: chatReducer } = createSlice({
 				case 'end': {
 					if (payload.type_message === 'system') {
 						state.messages.push(payload);
+					}
+
+					if (payload.sender === 'you') {
+						state.isTypingBot = true;
 					}
 
 					if (payload.sender === 'bot') {
