@@ -1,6 +1,6 @@
 import { Fragment, lazy, Suspense, useState } from 'react';
 
-import cookie from './assets/images/cookie-icon.svg';
+import botIcon from './assets/images/start-icon.png';
 
 const ChatBot = lazy(() => import('./components/ChatBot'));
 
@@ -14,21 +14,21 @@ const App = () => {
 	return (
 		<Fragment>
 			{
-				!chatLoaded ? (
-					<button
-						onClick={initChatBot}
-						className="m-chat-button-load"
-					>
-						<img src={cookie} alt="Запустить чат"/>
-					</button>
-				) : (
+				chatLoaded ? (
 					<Suspense>
 						<ChatBot/>
 					</Suspense>
+				) : (
+					<button
+						onClick={ initChatBot }
+						className="m-chat-button-load"
+					>
+						<img src={ botIcon } alt="Запустить чат"/>
+					</button>
 				)
 			}
 		</Fragment>
-	)
+	);
 };
 
 export default App;
