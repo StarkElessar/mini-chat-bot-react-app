@@ -1,6 +1,5 @@
 import { FC } from 'react';
-import UserIcon from '../assets/images/user-icon.png';
-import BotIcon from '../assets/images/cookie-icon.svg';
+import { MessageAvatar } from './MessageAvatar';
 
 interface IProps {
 	isMe: boolean;
@@ -12,9 +11,7 @@ interface IProps {
 const ImageLinkMessage: FC<IProps> = ({ isMe, link, message, photo }) => {
 	return (
 		<div className={ `m-chat-message ${ isMe ? 'user' : '' }` }>
-			<div className="m-chat-message__image">
-				<img src={ isMe ? UserIcon : BotIcon } alt="Avatar"/>
-			</div>
+			<MessageAvatar isMe={isMe}/>
 
 			<div className="m-chat-message__text">
 				<img src={photo} alt={message}/>

@@ -1,16 +1,19 @@
-import { ChangeEvent, FormEvent, KeyboardEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, KeyboardEvent, RefObject, useState } from 'react';
 
-import { useActions, useAppDispatch, useAppSelector } from '../store';
-import { smsCountRemainRequest, sendMessageThunk, sendLogData } from '../store/slices/chat-slice';
-import { useElementHeight } from '../hooks/useElementHeight';
+import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks';
+import { ChatWebSocketAPI } from '../api/chat-websocket-api';
+import { useElementHeight } from '../hooks/element-height';
 import { SendIcon } from './icons';
 
-const ChatFooter = () => {
+interface IProps {
+	textControlRef: RefObject<HTMLTextAreaElement>;
+}
+
+const ChatFooter: FC<IProps> = ({ textControlRef }) => {
 	const dispatch = useAppDispatch();
 	const [ prompt, setPrompt ] = useState<string>('');
 	const { elementRef, elementStyle } = useElementHeight('footer');
-	const { canSendMessage, userDialogData } = useAppSelector((state) => state.chat);
-	const { addMessage } = useActions();
+	const { canSendMessage } = useAppSelector((state) => state.chat);
 
 	const handleKeyup = (input: HTMLTextAreaElement): void => {
 		input.style.height = '64px';
@@ -22,27 +25,10 @@ const ChatFooter = () => {
 		handleKeyup(target);
 	};
 
-	const sendMessage = async (): Promise<void> => {
+	const sendMessage = () => {
 		if (!prompt.trim()) return;
-
-		try {
-			const res = dispatch(smsCountRemainRequest());
-			const smsLeftCount = await res.unwrap();
-
-			if (smsLeftCount) {
-				dispatch(sendMessageThunk(prompt));
-			}
-		} catch (err) {
-			console.warn(err);
-			addMessage({
-				id: crypto.randomUUID(),
-				message: 'Произошла ошибка, попробуйте позже',
-				sender: 'bot',
-				type_message: 'system'
-			});
-		} finally {
-			setPrompt('');
-		}
+		dispatch(ChatWebSocketAPI.sendMessage(prompt));
+		setPrompt('');
 	};
 
 	const formOnSubmit = (event: FormEvent<HTMLFormElement>): void => {
@@ -51,17 +37,14 @@ const ChatFooter = () => {
 	};
 
 	const handleTextareaKeyup = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
+		const { shiftKey, key } = event;
 		// Проверяем, была ли нажата клавиша Enter (код клавиши 13)
-		if (event.key === 'Enter') {
+		if (!shiftKey && key === 'Enter') {
 			// Предотвращаем перенос строки в текстовом поле
 			event.preventDefault();
 			sendMessage();
 		}
 	};
-
-	useEffect(() => {
-		dispatch(sendLogData(userDialogData));
-	}, [userDialogData]);
 
 	return (
 		<div className="m-chat-footer" ref={elementRef} style={elementStyle}>
@@ -72,6 +55,7 @@ const ChatFooter = () => {
 					value={prompt}
 					onChange={messageOnChange}
 					onKeyDown={handleTextareaKeyup}
+					ref={textControlRef}
 				></textarea>
 
 				<button

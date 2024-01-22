@@ -1,13 +1,15 @@
 import { FC, MouseEvent, ReactElement } from 'react';
 
-import { useElementHeight } from '../hooks/useElementHeight';
-import { useActions } from '../store';
+import { useElementHeight } from '../hooks/element-height';
+import { useActions, useAppSelector } from '../hooks/redux-hooks';
 
 const ChatHeader: FC = (): ReactElement => {
 	const { elementRef, elementStyle } = useElementHeight('header');
 	const { openChat, closeChat} = useActions();
+	const isOpen = useAppSelector(({ chat }) => chat.isOpen);
 
 	const onOpenChatHandler = (): void => {
+		if (isOpen) return;
 		openChat();
 	};
 
@@ -18,7 +20,7 @@ const ChatHeader: FC = (): ReactElement => {
 
 	return (
 		<div className="m-chat-header" ref={elementRef} style={elementStyle} onClick={onOpenChatHandler}>
-			<div className="m-chat-header__title">Чат Dr.Bakers</div>
+			<div className="m-chat-header__title">Чат Mr.Stark</div>
 
 			<button
 				type="button"
