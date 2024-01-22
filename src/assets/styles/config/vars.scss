@@ -1,7 +1,7 @@
 :root {
-	--m-chat-default-transition: .3s ease-in-out;
+	--m-chat-default-transition: .2s ease-in-out;
 	--m-chat-bg-color: #f4fcfe;
-	--m-chat-hue-color: 220;
+	--m-chat-hue-color: 170;
 	--m-chat-primary-color: hsl(var(--m-chat-hue-color), 95%, 35%);
 	--m-chat-primary-dark-color: hsl(var(--m-chat-hue-color), 95%, 30%);
 
@@ -13,4 +13,6 @@
 	);
 
 	--m-chat-white-color: #fff;
+
+	--m-chat-base-shadow: 0 0 5px 0 rgba(#000, 10%);
 }
