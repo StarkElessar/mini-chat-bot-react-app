@@ -5,9 +5,16 @@ export interface IMessage {
 	type_message: 'message' | 'file' | 'system' | 'image-link';
 	link?: string;
 	photo_link?: string;
-	hasLink?: boolean;
+	has_link?: boolean;
+	has_feedback?: boolean;
 }
 
 export interface IDataResponse extends IMessage {
 	type: 'start' | 'stream' | 'end';
+}
+
+export interface ISendFeedbackDto {
+	id: string;
+	text_response: string;
+	rating: number;
 }
