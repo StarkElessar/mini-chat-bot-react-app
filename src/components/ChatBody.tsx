@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef } from 'react';
 
-import { useAppSelector } from '../store';
+import { useAppSelector } from '../hooks/redux-hooks';
 import Message from './Message';
 import SystemMessage from './SystemMessage';
 import ImageLinkMessage from './ImageLinkMessage';

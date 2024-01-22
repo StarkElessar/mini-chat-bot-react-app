@@ -2,7 +2,7 @@ import { IDataResponse } from '../types';
 
 type SubscriberType = (data: IDataResponse) => void;
 
-export class ChatApi {
+export class WebSocketManager {
 	private _ws: WebSocket | null = null;
 	private _subscribers: SubscriberType[] = [];
 	private readonly _url: string = '';
