@@ -1,15 +1,15 @@
-import { useMemo } from 'react';
-import { bindActionCreators, combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 import logger from 'redux-logger';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { chatActions, chatReducer } from './slices/chat-slice';
+import { chatReducer } from './slices/chat-slice';
+import { feedbackReducer } from './slices/feedback-slice';
 
 const isDev = process.env.NODE_ENV === 'development';
 
 const rootReducer = combineReducers({
 	chat: chatReducer,
+	feedback: feedbackReducer,
 });
 
 export const store = configureStore({
@@ -28,12 +28,3 @@ export const store = configureStore({
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
-
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-
-export const useAppDispatch: () => AppDispatch = useDispatch;
-
-export const useActions = () => {
-	const dispatch = useDispatch();
-	return useMemo(() => bindActionCreators({ ...chatActions }, dispatch), [dispatch]);
-};
