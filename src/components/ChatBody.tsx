@@ -38,7 +38,17 @@ const ChatBody = memo(() => {
 					}
 				})
 			}
-			<div ref={messagesEnd}/>
+
+			{
+				isTypingBot && (
+					<div className="m-chat-message-typing">
+						<span className="m-chat-message-typing__loader-bar"></span>
+						<span className="m-chat-message-typing__loader-bar"></span>
+						<span className="m-chat-message-typing__loader-bar"></span>
+					</div>
+				)
+			}
+			<div ref={ messagesEnd }/>
 		</div>
 	);
 });
