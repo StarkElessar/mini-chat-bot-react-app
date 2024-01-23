@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { chatActions } from '../store/slices/chat-slice';
 import { WebSocketManager } from '../utils/websocket-manager';
+import { ISendMessageDto } from '../types';
 
 export class ChatWebSocketAPI {
 	public static wsInstance = new WebSocketManager(process.env.REACT_APP_WS_URL as string);
@@ -20,7 +21,7 @@ export class ChatWebSocketAPI {
 		});
 	});
 
-	public static sendMessage = createAsyncThunk('chat/sendMessageThunk', async (message: string | Blob) => {
-		ChatWebSocketAPI.wsInstance.sendMessage(message);
+	public static sendMessage = createAsyncThunk('chat/sendMessageThunk', async (message: ISendMessageDto) => {
+		ChatWebSocketAPI.wsInstance.sendMessage(JSON.stringify(message));
 	});
 }

@@ -27,7 +27,10 @@ const ChatFooter: FC<IProps> = ({ textControlRef }) => {
 
 	const sendMessage = () => {
 		if (!prompt.trim()) return;
-		dispatch(ChatWebSocketAPI.sendMessage(prompt));
+
+		const messageData = { message: prompt };
+
+		dispatch(ChatWebSocketAPI.sendMessage(messageData));
 		setPrompt('');
 	};
 

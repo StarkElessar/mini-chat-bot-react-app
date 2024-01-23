@@ -18,3 +18,7 @@ export interface ISendFeedbackDto {
 	text_response: string;
 	rating: number;
 }
+
+export interface ISendMessageDto {
+	message: string;
+}
