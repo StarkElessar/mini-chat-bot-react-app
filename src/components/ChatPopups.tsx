@@ -1,4 +1,4 @@
-import { Fragment, MouseEvent, useState } from 'react';
+import { ChangeEvent, Fragment, MouseEvent, useState } from 'react';
 
 import { useActions, useAppDispatch, useAppSelector } from '../hooks/redux-hooks';
 import { ChatAPI } from '../api/chat-api';
@@ -17,6 +17,7 @@ const FeedbackPopup = () => {
 	const dispatch = useAppDispatch();
 	const [rating, setRating] = useState(0);
 	const [feedbackText, setFeedbackText] = useState('');
+	const [isEmpty, setIsEmpty] = useState(false);
 	const { isLoadingFeedback, messageId } = useAppSelector(({ feedback }) => feedback);
 	const {
 		togglePopup,
@@ -29,8 +30,16 @@ const FeedbackPopup = () => {
 		togglePopup(false);
 	};
 
+	const onChangeFeedbackValue = ({ target: { value } }: ChangeEvent<HTMLTextAreaElement>) => {
+		setFeedbackText(value)
+		setIsEmpty(Boolean(!value));
+	};
+
 	const sendFeedback = async () => {
-		if (!messageId) return;
+		if (!messageId || !feedbackText) {
+			setIsEmpty(true);
+			return;
+		}
 
 		try {
 			const response = dispatch(ChatAPI.sendFeedback({ id: messageId, text_response: feedbackText, rating }));
@@ -50,11 +59,21 @@ const FeedbackPopup = () => {
 		<div className="m-chat-popup" onClick={onClosePopup}>
 			<div className="m-chat-popup__body">
 				<div className="m-chat-popup__title">Оставить отзыв</div>
-				<textarea
-					placeholder="Напишите короткий отзыв об ответе.."
-					value={feedbackText}
-					onChange={({ target }) => setFeedbackText(target.value)}
-				></textarea>
+
+				<div>
+					<textarea
+						placeholder="Напишите короткий отзыв об ответе.."
+						value={feedbackText}
+						onChange={onChangeFeedbackValue}
+						className={isEmpty ? 'is-empty' : ''}
+					></textarea>
+					{
+						isEmpty &&
+							<div className="m-chat-popup__message">
+								Нельзя отправить отчет без отзыва!
+							</div>
+					}
+				</div>
 
 				<div className="m-chat-popup__rating">
 					Дайте оценку ответу:
@@ -69,7 +88,7 @@ const FeedbackPopup = () => {
 				</button>
 
 				{
-					!isLoadingFeedback && (
+					isLoadingFeedback && (
 						<div className="m-chat-popup__loader">
 							<span className="loader"></span>
 						</div>
@@ -77,7 +96,7 @@ const FeedbackPopup = () => {
 				}
 			</div>
 		</div>
-	)
+	);
 };
 
 export default ChatPopups;

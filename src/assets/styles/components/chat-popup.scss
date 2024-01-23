@@ -1,4 +1,6 @@
 .m-chat-popup {
+	--message-error-color: #ff4747;
+
 	position: absolute;
 	inset: 0;
 	background-color: rgba(#fff, 40%);
@@ -25,14 +27,25 @@
 			min-height: 120px;
 			max-height: 260px;
 			padding: 10px;
-			resize: vertical;
+			resize: none;
 			border-radius: 6px;
+
+			&.is-empty {
+				outline: 1px solid var(--message-error-color);
+			}
 		}
 	}
 
 	// .m-chat-popup__title
 	&__title {
 		color: #fff;
+		text-align: center;
+	}
+
+	// .m-chat-popup__message
+	&__message {
+		font-size: 12px;
+		color: var(--message-error-color);
 		text-align: center;
 	}
 
@@ -73,7 +86,7 @@
 		.loader {
 			width: 48px;
 			height: 48px;
-			border: 3px dotted #444;
+			border: 3px dotted var(--m-chat-system-color);
 			border-style: solid solid dotted dotted;
 			border-radius: 50%;
 			display: inline-block;

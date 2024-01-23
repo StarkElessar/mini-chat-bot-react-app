@@ -9,11 +9,13 @@ import { useActions } from '../hooks/redux-hooks';
 interface IProps {
 	isMe: boolean;
 	message: IMessage;
+	canSendMessage: boolean;
 }
 
 const Message: FC<IProps> = memo((props): ReactElement => {
 	const {
 		isMe,
+		canSendMessage,
 		message: {
 			message,
 			type_message,
@@ -51,6 +53,7 @@ const Message: FC<IProps> = memo((props): ReactElement => {
 											title="Дать оценку ответу"
 											onClick={onFeedbackClickHandle}
 											className="m-chat-message__button"
+											disabled={!canSendMessage}
 										>
 											<FeedbackIcon/>
 										</button>

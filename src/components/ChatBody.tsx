@@ -7,7 +7,7 @@ import ImageLinkMessage from './ImageLinkMessage';
 
 const ChatBody = memo(() => {
 	const messagesEnd = useRef<HTMLDivElement>(null);
-	const { messages, isTypingBot } = useAppSelector(({ chat }) => chat);
+	const { messages, isTypingBot, canSendMessage } = useAppSelector(({ chat }) => chat);
 
 	useEffect(() => {
 		messagesEnd.current?.scrollIntoView();
@@ -19,7 +19,14 @@ const ChatBody = memo(() => {
 				messages.map((message) => {
 					switch (message.type_message) {
 						case 'message': {
-							return <Message isMe={message.sender === 'you'} message={message} key={message.id}/>
+							return (
+								<Message
+									canSendMessage={canSendMessage}
+									isMe={message.sender === 'you'}
+									message={message}
+									key={message.id}
+								/>
+							)
 						}
 						case 'system': {
 							return <SystemMessage key={message.id} message={message.message}/>

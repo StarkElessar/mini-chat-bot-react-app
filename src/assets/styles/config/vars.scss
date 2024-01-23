@@ -4,6 +4,7 @@
 	--m-chat-hue-color: 170;
 	--m-chat-primary-color: hsl(var(--m-chat-hue-color), 95%, 35%);
 	--m-chat-primary-dark-color: hsl(var(--m-chat-hue-color), 95%, 30%);
+	--m-chat-system-color: rgb(84 37 110 / 80%);
 
 	--m-chat-head-radius: 5px;
 	--m-chat-head-bg-color: linear-gradient(
@@ -14,5 +15,5 @@
 
 	--m-chat-white-color: #fff;
 
-	--m-chat-base-shadow: 0 0 5px 0 rgba(#000, 10%);
+	--m-chat-base-shadow: 0 0 5px rgb(0 0 0 / 10%);
 }
