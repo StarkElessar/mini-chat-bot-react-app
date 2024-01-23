@@ -10,23 +10,40 @@ import ChatBody from './ChatBody';
 import ChatFooter from './ChatFooter';
 import ChatPopups from './ChatPopups';
 
+const INITIAL_WIDTH = 340;
+
 const ChatBot = () => {
 	const container = useRef<HTMLTextAreaElement>(null);
 	const dispatch = useAppDispatch();
 	const isOpen = useAppSelector((state) => state.chat.isOpen);
-	const { position, separatorProps } = useResizable({
+
+	const {
+		position: width,
+		separatorProps: separatorPropsLeft,
+		isDragging: isDraggingX
+	} = useResizable({
 		axis: 'x',
 		min: 300,
-		initial: 340,
+		initial: INITIAL_WIDTH,
 		reverse: true,
+		shiftStep: 30
 	});
 
-	const { position: posTop, separatorProps: separatorPropsTop } = useResizable({
+	const {
+		position: height,
+		separatorProps: separatorPropsTop,
+		isDragging: isDraggingY
+	} = useResizable({
 		axis: 'y',
 		min: 300,
 		initial: 500,
-		reverse: true,
+		reverse: true
 	})
+
+	const wrapperStyles = {
+		width: isOpen ? width : INITIAL_WIDTH,
+		height: isOpen ? height : 'var(--m-chat-header-height)'
+	};
 
 	const onFocusElement = (event: MouseEvent<HTMLDivElement>) => {
 		const target = event.target as HTMLElement;
@@ -48,17 +65,15 @@ const ChatBot = () => {
 
 	return (
 		<div
-			className={ `m-chat ${isOpen ? 'is-open' : ''}` }
+			className={ `m-chat ${isOpen ? 'is-open' : ''} ${isDraggingX || isDraggingY ? 'dragging' : ''}` }
 			onClick={onFocusElement}
-			style={{
-				width: isOpen ? position : 340,
-				height: isOpen ? posTop : 'var(--m-chat-header-height)'
-			}}
+			style={wrapperStyles}
 		>
 			<ChatHeader/>
 			<ChatBody/>
 			<ChatFooter textControlRef={container}/>
 			<ChatPopups/>
+
 			<div
 				className="m-chat-separator-top"
 				tabIndex={0}
@@ -67,7 +82,7 @@ const ChatBot = () => {
 			<div
 				className="m-chat-separator-left"
 				tabIndex={0}
-				{...separatorProps}
+				{...separatorPropsLeft}
 			/>
 		</div>
 	);

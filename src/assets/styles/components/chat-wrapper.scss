@@ -5,6 +5,7 @@
 	right: 30px;
 	bottom: 0;
 	width: 340px;
+	max-width: calc(100vw - 100px);
 	max-height: 90vh;
 	display: flex;
 	flex-direction: column;
@@ -16,6 +17,7 @@
 		@include media-mx(768) {
 			width: 100% !important;
 			height: 100% !important;
+			max-width: 100vw;
 			min-height: 100vh;
 			max-height: 100vh;
 			right: 0;
@@ -30,6 +32,16 @@
 			display: block;
 		}
 	}
+
+	&.dragging {
+		&::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background-color: rgba(#555, 10%);
+			backdrop-filter: blur(1px);
+		}
+	}
 }
 
 .m-chat-separator-top,
@@ -37,6 +49,7 @@
 	position: absolute;
 	background-color: transparent;
 	transition: background-color var(--m-chat-default-transition);
+	z-index: 5;
 
 	@include any-hover {
 		background-color: rgba(#000, 10%);
