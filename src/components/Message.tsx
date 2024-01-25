@@ -30,7 +30,6 @@ const Message: FC<IProps> = memo((props): ReactElement => {
 	};
 
 	const onFeedbackClickHandle = () => {
-		console.log({id});
 		togglePopup(true);
 		setMessageId(id);
 	};

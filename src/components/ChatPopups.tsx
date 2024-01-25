@@ -89,8 +89,8 @@ const FeedbackPopup = () => {
 
 				{
 					isLoadingFeedback && (
-						<div className="m-chat-popup__loader">
-							<span className="loader"></span>
+						<div className="m-chat-spinner">
+							<span className="m-chat-spinner__loader"></span>
 						</div>
 					)
 				}
