@@ -20,7 +20,8 @@ const Message: FC<IProps> = memo((props): ReactElement => {
 			message,
 			type_message,
 			id,
-			has_feedback
+			has_feedback,
+			first_message
 		}
 	} = props;
 	const { togglePopup, setMessageId } = useActions();
@@ -44,6 +45,20 @@ const Message: FC<IProps> = memo((props): ReactElement => {
 						<Fragment>
 							<div className="m-chat-message__text">
 								<ReactMarkdown components={componentsOptions}>{message}</ReactMarkdown>
+								{
+									first_message && (
+										<Fragment>
+											<br/>
+											<p>Новые рецепты каждый день в наших сообществах. Подписывайтесь!</p>
+											<ul>
+												<li><a href="https://baking-academy.ru" target="_blank">сайт</a></li>
+												<li><a href="#" target="_blank">группа ВК</a></li>
+												<li><a href="#" target="_blank">TG</a></li>
+												<li><a href="#" target="_blank">YouTube</a></li>
+											</ul>
+										</Fragment>
+									)
+								}
 							</div>
 							{
 								!isMe && !has_feedback && (

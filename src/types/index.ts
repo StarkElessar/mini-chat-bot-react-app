@@ -7,6 +7,7 @@ export interface IMessage {
 	photo_link?: string;
 	has_link?: boolean;
 	has_feedback?: boolean;
+	first_message?: boolean;
 }
 
 export interface IDataResponse extends IMessage {

@@ -19,6 +19,8 @@ const initialState: IChatState = {
 	messages: [],
 };
 
+let FIRST_CYCLE = true;
+
 const { actions: chatActions, reducer: chatReducer } = createSlice({
 	name: 'chat',
 	initialState,
@@ -66,8 +68,11 @@ const { actions: chatActions, reducer: chatReducer } = createSlice({
 						if (existingMessageIndex !== -1) {
 							state.messages[existingMessageIndex] = {
 								...messages[existingMessageIndex],
-								has_feedback: false
+								has_feedback: false,
+								first_message: FIRST_CYCLE
 							}
+
+							if (FIRST_CYCLE) FIRST_CYCLE = false;
 						}
 					}
 
