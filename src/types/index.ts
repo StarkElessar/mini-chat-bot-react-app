@@ -5,7 +5,8 @@ export interface IMessage {
 	type_message: 'message' | 'file' | 'system' | 'image-link';
 	link?: string;
 	photo_link?: string;
-	hasLink?: boolean;
+	has_link?: boolean;
+	first_message?: boolean;
 }
 
 export interface IDataResponse extends IMessage {

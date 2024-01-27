@@ -43,6 +43,8 @@ const initialState: IChatState = {
 	}
 };
 
+let FIRST_CYCLE = true;
+
 const { actions: chatActions, reducer: chatReducer } = createSlice({
 	name: 'chat',
 	initialState,
@@ -80,7 +82,18 @@ const { actions: chatActions, reducer: chatReducer } = createSlice({
 						const allRecipes = state.allRecipes ? current(state.allRecipes) : null;
 						const lastYouMessage = messages.filter(({ sender }) => sender === 'you').at(-1);
 						const lastBotMessage = messages.filter(({ sender }) => sender === 'bot').at(-1);
+						const firstMessageIndexFromBot = messages.findIndex(({ type_message, sender, id }) =>
+							type_message === 'message' && sender === 'bot' && id === payload.id);
 						const hasLink = lastBotMessage?.message.match(linkRegExp);
+
+						if (firstMessageIndexFromBot !== -1) {
+							state.messages[firstMessageIndexFromBot] = {
+								...messages[firstMessageIndexFromBot],
+								first_message: FIRST_CYCLE
+							};
+
+							if (FIRST_CYCLE) FIRST_CYCLE = false;
+						}
 
 						state.userDialogData.quest = lastYouMessage?.message;
 						state.userDialogData.answ = lastBotMessage?.message;
