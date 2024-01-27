@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { bindActionCreators, combineReducers } from 'redux';
-import logger from 'redux-logger';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
@@ -14,15 +13,7 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
 	reducer: rootReducer,
-	middleware: (getDefaultMiddleware) => {
-		const middlewares = [];
-
-		if (isDev) {
-			middlewares.push(logger);
-		}
-
-		return getDefaultMiddleware().concat([...middlewares]);
-	},
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 	devTools: isDev,
 });
 
