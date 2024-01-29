@@ -1,4 +1,5 @@
 import { IDataResponse } from '../types';
+import {uuIdV4} from "./random-id";
 
 type SubscriberType = (data: IDataResponse) => void;
 
@@ -42,7 +43,7 @@ export class WebSocketManager {
 
 	private onOpenSocketHandler(event: Event): void {
 		this._subscribers.forEach((subscriber) => subscriber({
-			id: crypto.randomUUID(),
+			id: uuIdV4(),
 			message: this._ws?.readyState === 1 ? 'Успешное подключение к чату' : 'Не удалось подключиться',
 			sender: 'bot',
 			type: 'end',
@@ -61,7 +62,7 @@ export class WebSocketManager {
 
 	private onCloseSocketHandler(event: CloseEvent): void {
 		this._subscribers.forEach((subscriber) => subscriber({
-			id: crypto.randomUUID(),
+			id: uuIdV4(),
 			message: 'Соединение разорвано',
 			type_message: 'system',
 			type: 'end',
