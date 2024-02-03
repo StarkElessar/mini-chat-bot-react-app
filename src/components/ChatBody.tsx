@@ -7,11 +7,11 @@ import ImageLinkMessage from './ImageLinkMessage';
 
 const ChatBody = memo(() => {
 	const messagesEnd = useRef<HTMLDivElement>(null);
-	const messages = useAppSelector((state) => state.chat.messages);
+	const { messages, isTypingBot } = useAppSelector((state) => state.chat);
 
 	useEffect(() => {
 		messagesEnd.current?.scrollIntoView();
-	}, [messages]);
+	}, [messages, isTypingBot]);
 
 	return (
 		<div className="m-chat-body">
@@ -37,6 +37,15 @@ const ChatBody = memo(() => {
 						}
 					}
 				})
+			}
+			{
+				isTypingBot && (
+					<div className="m-chat-message-typing">
+						<span className="m-chat-message-typing__loader-bar"></span>
+						<span className="m-chat-message-typing__loader-bar"></span>
+						<span className="m-chat-message-typing__loader-bar"></span>
+					</div>
+				)
 			}
 			<div ref={messagesEnd}/>
 		</div>

@@ -24,6 +24,7 @@ export interface IChatState {
 	isOpen: boolean;
 	canSendMessage: boolean;
 	messages: IMessage[];
+	isTypingBot: boolean;
 	isLoadingRecipes: boolean;
 	allRecipes: Record<string, IRecipe> | null;
 	userDialogData: ICheckingLimitData
@@ -34,6 +35,7 @@ const initialState: IChatState = {
 	messageStatus: 'end',
 	canSendMessage: true,
 	messages: [],
+	isTypingBot: false,
 	isLoadingRecipes: false,
 	allRecipes: null,
 	userDialogData: {
@@ -62,6 +64,10 @@ const { actions: chatActions, reducer: chatReducer } = createSlice({
 					break;
 				}
 				case 'stream': {
+					if (payload.sender === 'bot') {
+						state.isTypingBot = false;
+					}
+
 					const existingMessageIndex = state.messages.findIndex(({ id }) => id === payload.id);
 
 					if (existingMessageIndex !== -1) {
@@ -111,6 +117,8 @@ const { actions: chatActions, reducer: chatReducer } = createSlice({
 								link: link
 							})
 						}
+					} else {
+						state.isTypingBot = true;
 					}
 
 					state.canSendMessage = true;
