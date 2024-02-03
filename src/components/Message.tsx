@@ -4,7 +4,7 @@ import ReactMarkdown, { Components } from 'react-markdown';
 import { IMessage } from '../types';
 import { MessageAvatar } from './MessageAvatar';
 import { FeedbackIcon } from './icons';
-import { useActions } from '../hooks/redux-hooks';
+import { useActions, useAppSelector } from '../hooks/redux-hooks';
 
 interface IProps {
 	isMe: boolean;
@@ -24,6 +24,7 @@ const Message: FC<IProps> = memo((props): ReactElement => {
 		}
 	} = props;
 	const { togglePopup, setMessageId } = useActions();
+	const allMessages = useAppSelector((state) => state.chat.messages);
 
 	const componentsOptions: Components = {
 		a: ({ node, ...props}) => <a target="_blank" {...props}/>
@@ -31,7 +32,16 @@ const Message: FC<IProps> = memo((props): ReactElement => {
 
 	const onFeedbackClickHandle = () => {
 		togglePopup(true);
-		setMessageId(id);
+		/**
+		 * TODO: современем может быть выпилим этот костыль для бека..
+		 * Бек не может находить id своих сообщений
+		 * */
+		const selectedMessageIndex = allMessages.findIndex((message) => message.id === id);
+
+		if (selectedMessageIndex !== -1) {
+			const message = allMessages[selectedMessageIndex - 1];
+			setMessageId(message.id);
+		}
 	};
 
 	return (
