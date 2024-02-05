@@ -86,7 +86,10 @@ const { actions: chatActions, reducer: chatReducer } = createSlice({
 			const existingMessageIndex = state.messages.findIndex(({ id }) => id === payload.id);
 
 			if (existingMessageIndex !== -1) {
-				state.messages[existingMessageIndex].has_feedback = true;
+				/*
+				* TODO: временный костыль, пока что бэк не можжет получать id нужного смс от бота
+				*  */
+				state.messages[existingMessageIndex + 1].has_feedback = true;
 			}
 		}
 	},
