@@ -4,6 +4,7 @@ import { useAppSelector } from '../hooks/redux-hooks';
 import Message from './Message';
 import SystemMessage from './SystemMessage';
 import ImageLinkMessage from './ImageLinkMessage';
+import ActionFormMessage from './ActionFormMessage';
 
 const ChatBody = memo(() => {
 	const messagesEnd = useRef<HTMLDivElement>(null);
@@ -39,6 +40,14 @@ const ChatBody = memo(() => {
 									message={message.message}
 									link={message.link}
 									photo={message.photo_link}
+								/>
+							)
+						}
+						case 'action-form': {
+							return (
+								<ActionFormMessage
+									key={message.id}
+									isMe={message.sender === 'you'}
 								/>
 							)
 						}
