@@ -1,8 +1,10 @@
+type MessageType = 'message' | 'file' | 'system' | 'image-link' | 'action-form';
+
 export interface IMessage {
 	sender: 'bot' | 'you',
 	message: string;
 	id: string;
-	type_message: 'message' | 'file' | 'system' | 'image-link';
+	type_message: MessageType;
 	link?: string;
 	photo_link?: string;
 	has_link?: boolean;
