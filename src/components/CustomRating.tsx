@@ -13,10 +13,14 @@ const CustomRating: FC<IProps> = ({ rating, setRating }) => {
 		<Rating
 			value={rating}
 			onChange={setRating}
-			itemStyles={{ itemShapes: Star, activeFillColor: 'var(--m-chat-primary-color)', inactiveFillColor: '#ffedd5' }}
+			itemStyles={{
+				itemShapes: Star,
+				activeFillColor: 'var(--m-chat-primary-color)',
+				inactiveFillColor: '#ffedd5'
+			}}
 			style={{maxWidth: 100}}
 		/>
-	)
+	);
 };
 
 export default CustomRating;
